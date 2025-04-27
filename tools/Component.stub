@@ -1,0 +1,19 @@
+<template>
+	<div class="{{componentName}}">
+		<!-- Your component template goes here -->
+	</div>
+</template>
+
+<script lang="ts">
+import { Component, toNative, Vue } from 'vue-facing-decorator'
+
+@Component({})
+class {{componentName}} extends Vue {}
+export default toNative({{componentName}})
+</script>
+
+<style lang="scss" scoped>
+.{{componentName}} {
+/* Component-specific styles */
+}
+</style>
