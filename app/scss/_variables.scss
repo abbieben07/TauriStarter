@@ -1,0 +1,35 @@
+// Bootstrap Color Scheme - GHG Registry Eco Theme (Refined)
+
+$light: #dfdede; // Almost pure white background
+$dark: #102a13; // Very dark green for contrast
+
+// Core brand colors
+$primary: #2e7d32; // Eco deep green (main brand)
+$secondary: #546e7a; // Cool slate grey-blue (neutral, distinct from green)
+$info: #0288d1; // Clear reporting blue
+$success: #388e3c; // Verified compliance green
+$warning: #fbc02d; // Amber caution yellow
+$danger: #c62828; // High-contrast emission red
+
+// Accent palette (greens kept for eco emphasis)
+$accent1: #00695c; // Teal green - audit/process
+$accent2: #1b5e20; // Forest green - strong emphasis
+$accent3: #8bc34a; // Lime green - progress visuals
+$accent4: #c0ca33; // Olive green - balance/neutral
+$accent5: #dcedc8; // Pale green - background highlight
+
+// Neutrals for readability
+$muted: #757575; // Neutral text
+$border: #e0e0e0; // Light grey border
+
+// Derived tones
+$primary-dark: darken($primary, 12%);
+$primary-darker: darken($primary, 22%);
+$primary-faint: #e8f5e9; // Very light eco green background
+
+// Suggested usage
+// - $primary for branding, headers, main CTAs
+// - $secondary for neutral UI elements (tabs, secondary buttons, cards)
+// - $success/$warning/$danger for status indicators in registry
+// - $info for data visualization and reporting highlights
+// - $light backgrounds, $dark text for max readability

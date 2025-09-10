@@ -72,5 +72,5 @@ export default defineNuxtConfig({
 			},
 		],
 	},
-	modules: ['@nuxt/image', '@vee-validate/nuxt', '@nuxt/content', '@vite-pwa/nuxt', 'nuxt-vuefire', 'nuxt-socket-io'],
+	modules: ['@nuxt/image', '@vee-validate/nuxt'],
 })

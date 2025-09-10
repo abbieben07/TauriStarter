@@ -1,0 +1,22 @@
+// Bootstrap Color Scheme
+@use "./variables" as *;
+
+:export {
+    light: $light;
+    dark: $dark;
+    primary: $primary;
+    secondary: $secondary;
+    info: $info;
+    success: $success;
+    warning: $warning;
+    danger: $danger;
+    accent1: $accent1;
+    accent2: $accent2;
+    accent3: $accent3;
+    accent4: $accent4;
+    accent5: $accent5;
+
+    primaryDark: $primary-dark;
+    primaryDarker: $primary-darker;
+    primaryFaint: $primary-faint;
+}
