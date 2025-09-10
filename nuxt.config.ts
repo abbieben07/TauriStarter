@@ -1,5 +1,3 @@
-import { viteStaticCopy } from 'vite-plugin-static-copy'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	compatibilityDate: '2024-04-03',
@@ -8,16 +6,7 @@ export default defineNuxtConfig({
 		esbuild: {
 			tsconfigRaw: {},
 		},
-		plugins: [
-			viteStaticCopy({
-				targets: [
-					{
-						src: 'node_modules/intl-tel-input/build/js/utils.js',
-						dest: 'vendor/phone',
-					},
-				],
-			}),
-		],
+		plugins: [],
 		optimizeDeps: {
 			include: ['lodash', 'pdfjs-dist/build/pdf.worker.min.mjs'],
 		},
@@ -46,31 +35,7 @@ export default defineNuxtConfig({
 	pwa: {
 		registerType: 'autoUpdate',
 	},
-	vuefire: {
-		config: {
-			apiKey: 'AIzaSyBIx4kS-Fb_YHf1TJ7gCLkgejIBaMr_5sE',
-			authDomain: 'crop-watch-ng.firebaseapp.com',
-			projectId: 'crop-watch-ng',
-			storageBucket: 'crop-watch-ng.firebasestorage.app',
-			messagingSenderId: '451098738227',
-			appId: '1:451098738227:web:c79570c854ecd5a173ed46',
-			measurementId: 'G-6QSCD1RK1S',
-		},
-		services: {
-			analytics: true,
-		},
-		analytics: {
-			collectionEnabled: true, // default
-		},
-	},
-	io: {
-		// module options
-		sockets: [
-			{
-				name: 'main',
-				url: 'http://localhost:3000',
-			},
-		],
-	},
+
+	ignore: ['**/src-tauri/**'],
 	modules: ['@nuxt/image', '@vee-validate/nuxt'],
 })

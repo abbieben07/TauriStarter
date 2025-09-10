@@ -1,21 +1,18 @@
 <template>
-	<a v-if="isSubMenu" href="#">
+	<a v-if="external || isSubMenu" :target="target">
 		<slot />
 	</a>
-	<a v-else-if="external" :href="href" target="_blank" rel="noopener noreferrer">
+	<!-- <NuxtLink v-else-if="isNuxt">
 		<slot />
-	</a>
-	<NuxtLink v-else-if="isNuxt" :to="href">
-		<slot />
-	</NuxtLink>
-	<InertiaLink v-else :href="href">
+	</NuxtLink> -->
+	<InertiaLink v-else>
 		<slot />
 	</InertiaLink>
 </template>
 
 <script lang="ts">
 import { Link as InertiaLink } from '@inertiajs/vue3'
-import { Component, Prop, toNative, Vue } from 'vue-facing-decorator'
+import { Component, Prop, Ref, toNative, Vue } from 'vue-facing-decorator'
 
 // Add this to inform TypeScript about window.$nuxt
 declare global {
@@ -30,11 +27,17 @@ declare global {
 	},
 })
 class Link extends Vue {
-	@Prop({ type: String, default: '#' })
-	readonly href!: string
+	declare $el: HTMLAnchorElement
 
 	@Prop({ type: Boolean, default: false })
 	readonly external!: boolean
+
+	@Ref('base')
+	readonly base!: HTMLAnchorElement
+
+	get target() {
+		return this.external ? '_blank' : ''
+	}
 
 	get isSubMenu() {
 		return (this.$attrs?.class as String)?.includes('nav-main-link-submenu') ?? false

@@ -1,6 +1,6 @@
 <template>
 	<ul class="nav-main" :class="styles">
-		<li v-for="(itemA, i) in menu" :key="i" :class="itemA.heading ? 'nav-main-heading' : 'nav-main-item'">
+		<li v-for="(itemA, i) in menu.filter((j) => hasRole(j.role))" :key="i" :class="itemA.heading ? 'nav-main-heading' : 'nav-main-item'">
 			<span v-if="itemA.heading">{{ itemA.label }}</span>
 			<Link v-else class="nav-main-link" :class="getSubmenuClass(itemA)" :data-toggle="getSubmenuToggle(itemA)" :href="getMenuLnk(itemA)" aria-haspopup="true" aria-expanded="false">
 				<i class="nav-main-link-icon" :class="itemA?.icon"></i>
@@ -27,9 +27,10 @@
 </template>
 
 <script lang="ts">
-import type { MenuItem } from '@/utils/Menu'
+import { hasRole } from '@/models/User'
 import { Component, Prop, toNative, Vue } from 'vue-facing-decorator'
-import type { RouteParams } from 'vue-router'
+import { RouteParams } from 'ziggy-js'
+import { MenuItem } from '../utils/Menu'
 import Link from './Link.vue'
 
 @Component({
@@ -49,15 +50,21 @@ class Menu extends Vue {
 	}
 
 	link(name?: string, query?: RouteParams<string> | string, url?: string) {
-		if (url) {
+		if (typeof name !== 'undefined' && typeof query !== 'undefined') {
+			return this.route(name, query)
+		} else if (url) {
 			return url
 		} else {
 			return '#'
 		}
 	}
 
+	hasRole(role: MenuItem['role']) {
+		return role ? hasRole(this.$auth.user, role) : true
+	}
+
 	getMenuLnk(item: MenuItem) {
-		return item.submenu && item.submenu.length > 0 ? '#' : item.url
+		return item.submenu && item.submenu.length > 0 ? '#' : this.route(item.name, item.query)
 	}
 
 	getSubmenuClass(item: MenuItem) {

@@ -1,13 +1,13 @@
 <template>
-	<div class="card">
+	<div class="card card-rounded">
 		<slot name="before" />
-		<div v-if="hasHeader" class="card-header">
+		<div v-if="hasHeader" class="card-header card-header-default">
 			<slot name="header" />
 		</div>
 		<div class="card-body">
 			<slot />
 		</div>
-		<div v-if="hasFooter" class="card-footer">
+		<div v-if="hasFooter" class="card-footer card-footer-default">
 			<slot name="footer" />
 		</div>
 	</div>

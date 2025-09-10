@@ -1,13 +1,15 @@
 <template>
-	<div v-bind="$attrs" class="block block-rounded">
-		<div v-if="hasHeader" class="block-header block-header-default text-truncate">
-			<slot name="header" />
-		</div>
-		<div class="block-content block-content-full" :class="style">
-			<slot />
-		</div>
-		<div v-if="hasFooter" class="block-content block-content-full block-content-sm bg-body-light fs-sm">
-			<slot name="footer" />
+	<div :class="style">
+		<div class="block block-rounded">
+			<div v-if="hasHeader" class="block-header block-header-default">
+				<slot name="header" />
+			</div>
+			<div class="block-content block-content-full" :class="style">
+				<slot />
+			</div>
+			<div v-if="hasFooter" class="block-content block-content-full block-content-sm bg-body-light fs-sm">
+				<slot name="footer" />
+			</div>
 		</div>
 	</div>
 </template>
