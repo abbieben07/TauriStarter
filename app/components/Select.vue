@@ -1,5 +1,5 @@
 <template>
-	<div class="form-floating">
+	<div class="form-floating select">
 		<select ref="view" v-bind="$attrs" v-model="value" class="form-select-lg w-100 d-none" :class="state">
 			<slot />
 		</select>
@@ -74,6 +74,7 @@ class Select extends Vue {
 
 	get defaults(): select2.Options {
 		return {
+			//@ts-ignore
 			ajax: {
 				method: 'GET',
 				data: ({ term, page }) => {
@@ -90,6 +91,7 @@ class Select extends Vue {
 			debug: import.meta.env.VITE_APP_DEBUG,
 			theme: 'bootstrap-5',
 			placeholder: this.label,
+			//minimumResultsForSearch: Infinity,
 			//@ts-ignore
 			templateResult: ({ text }) => text,
 			//@ts-ignore
@@ -173,6 +175,11 @@ class Select extends Vue {
 		let option = new Option(text, id, false, true)
 		this.select2.append(option)
 	}
+}
+
+export interface SelectData {
+	name: string
+	value: string
 }
 
 export default toNative(Select)

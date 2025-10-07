@@ -2,8 +2,8 @@
 //import Gate from '@/ts/policies/Gate'
 import { Status as ApprovalStatus } from '@/models/Approval'
 import { MoneyData } from '@/models/Money'
-import { Status as TransactionStatus, Type } from '@/models/Transaction'
-import { error, Renderer } from '@/ts/app'
+import { Status as TransactionStatus } from '@/models/Transaction'
+import { error, label, Renderer } from '@/ts/app'
 import Gate from '@/ts/gate'
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber'
 import { isNull } from 'lodash'
@@ -21,7 +21,7 @@ export class CellRender {
 				case ApprovalStatus.DECLINED:
 					return '<span class="text-danger">DECLINED</span>'
 				default:
-					return '<i>N/A</i>'
+					return '<span class="text-warning">PENDING</span>'
 			}
 		}
 	}
@@ -54,19 +54,6 @@ export class CellRender {
 		}
 	}
 
-	static payment() {
-		return (data) => {
-			switch (data) {
-				case Type.DEBIT:
-					return '<span class="text-success">DEBIT</span>'
-				case Type.CREDIT:
-					return '<span class="text-danger">CREDIT</span>'
-				default:
-					return '<i>N/A</i>'
-			}
-		}
-	}
-
 	static date(format = 'MMM DD, YYYY HH:mm') {
 		//format = 'MMM DD, YYYY hh:mm A'
 		return (data) => {
@@ -85,16 +72,15 @@ export class CellRender {
 	static actions(gate?: Gate, { view = true, update = true, trash = true, forceDelete = true } = {}) {
 		return (data, _type, row): string => {
 			let canView = gate?.allow('view', row)
-			//let canUpdate = gate?.allow('update', row)
+			let canUpdate = gate?.allow('update', row)
 			let canDelete = gate?.allow('delete', row)
 			let canForceDelete = gate?.allow('forceDelete', row)
 
 			let actions = '<div class="btn-group btn-group-lg" role="group">'
 			if (canView) {
-				actions += view ? `<a class="btn btn-primary inertia-link" title="View Record" href="${data.single}"><i class="fa fa-eye"></i></a>` : ''
+				actions += view ? `<a class="btn btn-primary" title="View Record" data-route="${data.single}"><i class="fa fa-eye"></i></a>` : ''
 			}
-			//if (canUpdate)
-			//actions += update ? `<a class="btn btn-secondary inertia-link" title="Update Record" href="${data.update}"><i class="fas fa-pencil-alt"></i></a>` : ''
+			if (canUpdate) actions += update ? `<a class="btn btn-secondary" title="Update Record" data-route="${data.update}"><i class="fas fa-pencil-alt"></i></a>` : ''
 
 			if (canDelete) {
 				if (row.trashed_) {
@@ -117,17 +103,21 @@ export class CellRender {
 			let title = ''
 			let link = ''
 			if (typeof data === 'object') {
-				title = data.title
-				link = data.url.single
+				title = data?.title
+				link = data?.url?.single
 			} else if (typeof data === 'string') {
 				title = data
-				link = row.url.single
+				link = row?.url?.single
 			}
 
-			let html = `<a href="${link}"><span class="d-flex align-self-center">${title}</span></a>`
+			let html = `<a href="${link}" data-route="${link}"><span class="d-flex align-self-center">${title}</span></a>`
 
 			return html
 		}
+	}
+
+	static link() {
+		return (data, _type, row) => `<a href="${row.url.single}" data-route="${row.url.single}">${data}</a>`
 	}
 
 	static money(currency: string = 'NGN') {
@@ -148,6 +138,10 @@ export class CellRender {
 
 	static admin() {
 		return (data) => `<a class="btn btn-danger clear text-white" data-id="${data}" title="Clear Record"><i class="fa fa-ban"></i></a>`
+	}
+
+	static label() {
+		return (data) => `<span class="text-secondary">${label(data)}</span>`
 	}
 }
 

@@ -1,5 +1,5 @@
 <template>
-	<div style="height: 500px; position: relative">
+	<div style="height: 300px" class="w-100">
 		<canvas ref="view" style="background-color: #fff" />
 	</div>
 </template>
@@ -48,14 +48,14 @@ class Chart extends Vue {
 					},
 				],
 			},
-			options: {
-				plugins: {
-					customCanvasBackgroundColor: {
-						color: 'rgba(0, 0, 0, 0)',
-					},
-				},
-			},
-			plugins: [plugin],
+			// options: {
+			// 	plugins: {
+			// 		customCanvasBackgroundColor: {
+			// 			color: 'rgba(0, 0, 0, 0)',
+			// 		},
+			// 	},
+			// },
+			// plugins: [plugin],
 		}
 	}
 

@@ -1,57 +1,52 @@
 <template>
-	<nav class="flex items-center space-x-2 mt-4 text-center">
-		<ul class="pagination justify-content-center">
-			<li class="page-item">
-				<NuxtLink class="page-link" :href="prev_page?.url.path" :class="{ disabled: current_page === 1 }">Prev</NuxtLink>
-			</li>
-			<li v-for="page in pages" :key="page.number" class="page-item">
-				<NuxtLink class="page-link" :to="page.url.path" :class="{ active: current_page === page.number }">
-					{{ page.number }}
-				</NuxtLink>
-			</li>
-			<li class="page-item">
-				<NuxtLink class="page-link" :href="next_page?.url.path" :class="{ disabled: current_page === pages.length }">Next</NuxtLink>
-			</li>
-		</ul>
-	</nav>
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" :class="{ disabled: currentPage === 1 }">
+        <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
+      </li>
+      <li
+        v-for="page in totalPages"
+        :key="page"
+        class="page-item"
+        :class="{ active: currentPage === page }"
+      >
+        <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+      </li>
+      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+        <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script lang="ts">
-import { Component, Prop, toNative, Vue } from 'vue-facing-decorator'
+import { Component, Prop, Vue, Emit } from 'vue-facing-decorator';
 
 @Component
-class Pagination extends Vue {
-	@Prop({ type: Array, required: true })
-	readonly pages!: Page[]
+export default class Pagination extends Vue {
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  currentPage!: number;
 
-	@Prop({ type: Number, default: 1 })
-	readonly current_page!: number
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  totalPages!: number;
 
-	@Prop({ type: Number, default: 5 })
-	readonly max_visible_pages!: number
-
-	get prev_page() {
-		return this.pages.find((page) => page.number === this.current_page - 1) || null
-	}
-
-	get next_page() {
-		return this.pages.find((page) => page.number === this.current_page + 1) || null
-	}
-}
-
-export default toNative(Pagination)
-
-export interface Page {
-	number: number
-	url: {
-		path: string
-		query?: Record<string, any>
-	}
+  @Emit('page-change')
+  changePage(page: number) {
+    if (page > 0 && page <= this.totalPages) {
+      return page;
+    }
+  }
 }
 </script>
 
 <style scoped>
-button {
-	min-width: 40px;
+.pagination {
+  cursor: pointer;
 }
 </style>

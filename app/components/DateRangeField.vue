@@ -1,29 +1,30 @@
 <template>
-	<Date v-model="value" :label :name :state :options="options">
+	<DateRange v-bind="$attrs" v-model="value" :label :name :state :options="options">
 		<template #error>
-			<Errors :errors="field.errors.value" />
+			<Errors :errors="errors" />
 		</template>
-	</Date>
+	</DateRange>
 </template>
 <script lang="ts">
 import { useField } from 'vee-validate'
 import { Component, Model, Prop, Setup, Vue, toNative } from 'vue-facing-decorator'
-import Date from './Date.vue'
+import DateRange, { type DateRangeValue } from './DateRange.vue'
 import Errors from './Errors.vue'
 
 @Component({
 	components: {
 		Errors,
-		Date,
+		DateRange,
 	},
-	emits: ['update:modelValue'],
+	inheritAttrs: false,
+	emits: ['update:modelValue', 'update:valueEnd'],
 })
-class DateField extends Vue {
-	@Setup((props) => useField<string | number>(props.name, props.rules, { initialValue: props.modelValue, label: props.label, type: props.type, syncVModel: true, validateOnValueUpdate: true }))
+class DateRangeField extends Vue {
+	@Setup((props) => useField<DateRangeValue>(props.name, props.rules, { initialValue: props.modelValue, label: props.label, type: props.type, syncVModel: true, validateOnValueUpdate: true }))
 	readonly field!: ReturnType<typeof useField>
 
-	@Model({ type: String })
-	readonly value!: string
+	@Model({ type: Object })
+	readonly value!: DateRangeValue
 
 	@Prop({ type: Object, default: () => [] })
 	readonly errors!: []
@@ -46,5 +47,5 @@ class DateField extends Vue {
 		return this.field.meta.valid ? 'is-valid' : 'is-invalid'
 	}
 }
-export default toNative(DateField)
+export default toNative(DateRangeField)
 </script>

@@ -1,5 +1,5 @@
 export interface ButtonLabel {
 	normal: string
-	loading: string
+	loading?: string
 	done?: string
 }

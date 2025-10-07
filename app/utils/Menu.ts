@@ -1,3 +1,4 @@
+import { Role } from '@/models/User'
 import { type RouteParams } from 'ziggy-js'
 
 export interface MenuItem {
@@ -10,4 +11,5 @@ export interface MenuItem {
 	submenu?: MenuItem[]
 	external?: boolean
 	to?: string | object
+	role?: string | string[] | Role | Role[]
 }

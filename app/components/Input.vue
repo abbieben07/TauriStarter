@@ -1,5 +1,5 @@
 <template>
-	<div class="form-floating">
+	<div class="form-floating input">
 		<input v-bind="$attrs" v-model="value" :type="type" class="form-control" :class="state" :placeholder="label" />
 		<label :for="$attrs.id">
 			{{ label }}

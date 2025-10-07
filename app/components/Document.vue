@@ -1,16 +1,16 @@
 <template>
 	<div ref="viewer" v-if="media" class="w-100 h-100">
 		<img v-if="isImage" ref="image" :src="media.url" class="w-100 h-100 image" />
-		<iframe ref="iframe" v-else :src="media.url" class="w-100 h-100 iframe" />
-		<!-- <PDFBox v-else :url="media.url" class="w-100 iframe" /> -->
+		<!-- <iframe ref="iframe" v-else :src="media.url" class="w-100 h-100 iframe" /> -->
+		<PDFBox v-else :url="media.url" class="w-100 iframe" /> -
 	</div>
 </template>
 
 <script lang="ts">
-import PDFBox from '@/components/PDFBox.vue'
 import type Media from '@/models/Media'
 import Viewer from 'viewerjs'
 import { Component, Prop, Ref, Vue, toNative } from 'vue-facing-decorator'
+import PDFBox from './PDFBox.vue'
 
 @Component({
 	components: {
@@ -36,11 +36,15 @@ class Document extends Vue {
 	mounted() {
 		if (this.isImage) this.image_viewer = new Viewer(this.image, { inline: true })
 
-		if (document.querySelector('iframe')?.contentWindow) {
-			document.querySelector('iframe').contentWindow.document.oncontextmenu = () => false
+		const iframe = document.querySelector('iframe')
+		const iframeWindow = iframe?.contentWindow
+		const iframeDocument = iframeWindow?.document
+
+		if (iframeDocument) {
+			iframeDocument.oncontextmenu = () => false
 
 			// Try to capture key events and disable printing shortcuts
-			document.querySelector('iframe').contentWindow.document.onkeydown = function (e) {
+			iframeDocument.onkeydown = function (e) {
 				if (e.ctrlKey && (e.key === 'p' || e.key === 's')) {
 					e.preventDefault()
 					alert('Printing and saving are disabled.')

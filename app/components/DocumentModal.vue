@@ -12,10 +12,10 @@
 	</Modal>
 </template>
 <script lang="ts">
-import Document from '@/components/Document.vue'
-import Modal from '@/components/Modal.vue'
 import type Media from '@/models/Media'
 import { Component, Prop, Ref, Vue, toNative } from 'vue-facing-decorator'
+import Document from './Document.vue'
+import Modal from './Modal.vue'
 
 @Component({
 	components: {

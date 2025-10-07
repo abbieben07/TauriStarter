@@ -1,13 +1,10 @@
 <template>
 	<!-- Footer -->
-	<footer id="page-footer" class="bg-primary-dark py-3">
-		<div class="content py-0 h-100">
-			<div class="row fs-sm h-100">
-				<div class="col-sm-6 order-sm-2 d-flex justify-content-center justify-content-sm-start align-items-center">{{ app_name }} &copy; {{ year }}</div>
-				<div class="col-sm-6 order-sm-2 d-flex justify-content-center justify-content-sm-end align-items-center">
-					Powered by TPHG Technologies Limited
-					<img src="@/assets/images/tphg.jpeg" class="ms-3" style="width: auto; height: 40px" />
-				</div>
+	<footer id="page-footer" class="bg-body-extra-light">
+		<div class="content py-3">
+			<div class="row fs-sm">
+				<div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"></div>
+				<div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">{{ copy }} &copy; <span data-toggle="year-copy"></span></div>
 			</div>
 		</div>
 	</footer>
@@ -18,14 +15,11 @@ import { Component, toNative, Vue } from 'vue-facing-decorator'
 
 @Component({})
 class Footer extends Vue {
-	get year() {
-		return new Date().getFullYear()
-	}
-
-	get app_name() {
+	get copy() {
 		return import.meta.env.VITE_APP_NAME
 	}
 }
+
 export default toNative(Footer)
 </script>
 <style lang="scss"></style>

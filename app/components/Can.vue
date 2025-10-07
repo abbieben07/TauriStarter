@@ -19,7 +19,7 @@ class Can extends Vue {
 	readonly role!: Role | Role[]
 
 	get can(): boolean {
-		return this.$gate.allow(this.ability, this.model) || this.$gate.hasRole(this.role)
+		return this.$auth.gate.allow(this.ability, this.model) || this.$auth.user.hasRole(this.role)
 	}
 }
 export default toNative(Can)

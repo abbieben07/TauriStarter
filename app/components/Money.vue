@@ -1,5 +1,5 @@
 <template>
-	<div class="form-floating">
+	<div class="form-floating money">
 		<input v-bind="$attrs" v-model="formattedValue" type="text" class="form-control" :class="state" :placeholder="label" @input="onInput" @blur="formatOnBlur" @keydown="onKeyDown" />
 		<label :for="$attrs.id">
 			{{ label }}
@@ -82,7 +82,7 @@ class Money extends Vue {
 			return
 		}
 		// Ensure that it is a number and stop the keypress
-		if ((event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) && (event.keyCode < 96 || event.keyCode > 105)) {
+		if ((event.shiftKey || event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
 			event.preventDefault()
 		}
 	}

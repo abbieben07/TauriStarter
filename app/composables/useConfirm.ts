@@ -26,10 +26,7 @@ export function useConfirm() {
 				document.body.removeChild(container)
 			}
 
-			const app = createApp({
-				render: () => h(ConfirmDialogComponent, { ...options, onConfirm, onCancel }),
-			})
-
+			const app = createApp(h(ConfirmDialogComponent, { ...options, onConfirm, onCancel }))
 			app.mount(container)
 		})
 	}

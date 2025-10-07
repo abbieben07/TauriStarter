@@ -11,7 +11,7 @@
 	<div ref="container" style="height: 80dvh" :class="$attrs.class" />
 </template>
 <script lang="ts">
-import Progressbar from '@/components/Progressbar.vue'
+import Progressbar from '@/vue/components/Progressbar.vue'
 import PDFJSExpress from '@pdftron/pdfjs-express'
 import Webviewer from '@pdftron/webviewer'
 import PSPDFKit, { Instance } from 'pspdfkit'
@@ -64,7 +64,10 @@ class PDFBox extends Vue {
 
 				if (this.url.length > 0) {
 					instance.UI.loadDocument(this.url, {
-						onLoadingProgress: (progress) => (this.progress = progress * 100),
+						onLoadingProgress: (progress) => {
+							console.log(progress)
+							this.progress = progress * 100
+						},
 					})
 				}
 			})

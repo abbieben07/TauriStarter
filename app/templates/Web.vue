@@ -1,5 +1,5 @@
 <template>
-	<div id="page-container" class="page-header-dark side-scroll side-trans-enabled main-content-boxed remember-theme">
+	<div id="page-container" class="page-header-dark main-content-boxed remember-theme">
 		<Header />
 		<main id="main-container">
 			<!-- Navigation -->
@@ -18,28 +18,28 @@
 
 						<!-- Main Navigation -->
 						<div id="main-navigation" class="d-none d-lg-block mt-2 mt-lg-0">
-							<MenuBar :router="true" :menu="menu" :boxed="true" />
+							<MenuBar :menu="menu" :boxed="true" />
 						</div>
 						<!-- END Main Navigation -->
 					</div>
 				</div>
 			</div>
 			<!-- END Navigation -->
-			<!-- Page Content -->
 			<slot name="banner" />
-
-			<slot />
-			<!-- END Page Content -->
+			<!-- Page Content -->
+			<div class="content">
+				<slot />
+			</div>
 		</main>
 		<Footer />
 	</div>
 </template>
 <script lang="ts">
-import Theme from '@/app/theme/js/main/app'
-import { type MenuItem } from '@/app/utils/Menu'
-import MenuBar from '@/components/Menu.vue'
-import Footer from '@/layouts/Web/Footer.vue'
-import Header from '@/layouts/Web/Header.vue'
+import Theme from '@/theme/js/main/app'
+import { MenuItem } from '@/vue/components/Menu'
+import MenuBar from '@/vue/components/Menu.vue'
+import Footer from '@/vue/layouts/Web/Footer.vue'
+import Header from '@/vue/layouts/Web/Header.vue'
 import { Component, Prop, toNative, Vue } from 'vue-facing-decorator'
 
 @Component({
@@ -61,24 +61,14 @@ class Web extends Vue {
 
 	menu: MenuItem[] = [
 		{
-			icon: 'fa-solid fa-home',
+			name: 'home.page',
+			icon: 'fas fa-home',
 			label: 'Home',
-			to: '/',
 		},
 		{
-			icon: 'fa-solid fa-chart-simple',
-			label: 'Reports',
-			to: '/reports',
-		},
-		{
-			icon: 'fa-solid fa-info',
-			label: 'About Us',
-			to: '/about',
-		},
-		{
-			icon: 'fa-solid fa-info',
-			label: 'Contact Us',
-			to: '/#contact',
+			name: 'dashboard.page',
+			icon: 'fas fa-gauge',
+			label: 'Dashboard',
 		},
 	]
 
@@ -91,5 +81,5 @@ class Web extends Vue {
 export default toNative(Web)
 </script>
 <style lang="scss">
-@import '@/scss/app.scss';
+@import '../../scss/app.scss';
 </style>

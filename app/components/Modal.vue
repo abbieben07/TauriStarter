@@ -1,5 +1,5 @@
 <template>
-	<div ref="view" class="modal" tabindex="-1" role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true">
+	<div ref="view" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true">
 		<div class="modal-dialog" role="document" v-bind="$attrs">
 			<div class="modal-content">
 				<div class="block block-rounded block-transparent mb-0">

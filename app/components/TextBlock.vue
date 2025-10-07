@@ -2,7 +2,7 @@
 	<div class="mb-3">
 		<span class="text-secondary d-block fs-6 w-100"><i :class="icon" v-if="icon" class="me-2"></i>{{ label }}</span>
 		<div class="justify-content-between d-flex align-items-center">
-			<span class="text-primary d-block fs-5 fs-md-4 text-break">
+			<span class="text-info d-block fs-5 fs-md-4 text-break">
 				<slot />
 				<span v-if="showDefault" class="text-muted">N/A</span>
 			</span>
@@ -49,3 +49,9 @@ class TextBlock extends Vue {
 }
 export default toNative(TextBlock)
 </script>
+<style lang="scss" scoped>
+@import '@/scss/_variables';
+a {
+	color: $primary;
+}
+</style>

@@ -1,7 +1,7 @@
 import SimpleParallax from 'simple-parallax-js/vanilla'
 
 export default {
-	mounted(el: HTMLElement, bindings: any) {
+	mounted(el: ParallaxElement, bindings: any) {
 		const options = {
 			scale: 1.5,
 			delay: 0.2,
@@ -10,8 +10,31 @@ export default {
 			//customWrapper: 'div',
 		}
 
-		new SimpleParallax(el, { ...options, ...(bindings.value ?? {}) } as SimpleParallax.Options)
+		el.__vueParallax = new SimpleParallax(el, { ...options, ...(bindings.value ?? {}) } as SimpleParallax.Options)
 	},
+
+	updated(el: ParallaxElement, bindings: any) {
+		if (el.__vueParallax) {
+			el.__vueParallax.destroy()
+		}
+
+		const options = {
+			scale: 1.5,
+			delay: 0.2,
+			orientation: 'down',
+			transition: 'cubic-bezier(0,0,0,1)',
+			//customWrapper: 'div',
+		}
+
+		el.__vueParallax = new SimpleParallax(el, { ...options, ...(bindings.value ?? {}) } as SimpleParallax.Options)
+	},
+
+	beforeUnmount(el: ParallaxElement) {
+		if (el.__vueParallax) {
+			el.__vueParallax.destroy()
+		}
+	},
+
 	getSSRProps(binding) {
 		return {}
 	},

@@ -1,80 +1,88 @@
 <template>
-	<div class="form-floating">
-		<input ref="view" v-model="value" :type="type" :placeholder="placeholder" v-bind="$attrs" class="form-control" :class="state" readonly autocomplete="off" @click="showPicker" />
-		<label :for="$attrs.id">{{ label }}</label>
-		<slot name="error" />
-	</div>
+    <div class="form-floating date">
+        <input ref="view" v-model="value" :type="type" :placeholder="placeholder" v-bind="$attrs" class="form-control" :class="state" readonly autocomplete="off" @click="showPicker" />
+        <label :for="$attrs.id">{{ label }}</label>
+        <slot name="error" />
+    </div>
 </template>
 <script lang="ts">
 import { merge } from 'lodash'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import { Datepicker } from 'vanillajs-datepicker'
 import { Component, Model, Prop, Ref, Vue, toNative } from 'vue-facing-decorator'
 
 @Component({
-	inheritAttrs: false,
+    inheritAttrs: false,
 })
 class Date extends Vue {
-	datepicker!: Datepicker
-	isShown = false
-	declare $attrs: {
-		id?: string
-	}
+    datepicker!: Datepicker
+    isShown = false
+    declare $attrs: {
+        id?: string
+    }
 
-	@Model({ type: String })
-	value!: string
+    @Model({ type: String })
+    value!: string
 
-	@Prop({ type: Object, default: () => [] })
-	readonly errors!: []
+    @Prop({ type: Object, default: () => [] })
+    readonly errors!: []
 
-	@Prop({ type: String })
-	readonly label!: string
+    @Prop({ type: String })
+    readonly label!: string
 
-	@Prop({ type: String, default: '' })
-	readonly placeholder!: string
+    @Prop({ type: String, default: '' })
+    readonly placeholder!: string
 
-	@Prop({ type: String, default: 'text' })
-	readonly type!: string
+    @Prop({ type: String, default: 'text' })
+    readonly type!: string
 
-	@Ref('view')
-	readonly view!: HTMLInputElement
+    @Ref('view')
+    readonly view!: HTMLInputElement
 
-	@Prop({ type: Object, default: () => {} })
-	readonly options!: object
+    @Prop({ type: Object, default: () => { } })
+    readonly options!: object
 
-	@Prop({ type: String, default: '' })
-	readonly state!: string
+    @Prop({ type: String, default: '' })
+    readonly state!: string
 
-	showPicker() {
-		if (!this.isShown) this.datepicker.show()
-	}
+    showPicker() {
+        if (!this.isShown) this.datepicker.show()
+    }
 
-	get defaults() {
-		return {
-			format: 'dd-mm-yyyy',
-			autohide: true,
-			nextArrow: '<i class="fa-solid fa-chevron-right"></i>',
-			prevArrow: '<i class="fa-solid fa-chevron-left"></i>',
-		}
-	}
+    get defaults() {
+        return {
+            format: 'dd-mm-yyyy',
+            autohide: true,
+            nextArrow: '<i class="fa-solid fa-chevron-right"></i>',
+            prevArrow: '<i class="fa-solid fa-chevron-left"></i>',
+        }
+    }
 
-	onDateChanged(date) {
-		this.value = moment(date).format('DD-MM-YYYY')
-	}
+    get formatted_value() {
+        return DateTime.fromISO(this.value).toJSDate()
+    }
 
-	mounted() {
-		const opts = merge(this.options, this.defaults)
-		this.datepicker = new Datepicker(this.view, opts)
-		//@ts-ignore
-		//this.datepicker.
-		this.datepicker.setDate(this.value)
-		// @ts-ignore
-		this.view.addEventListener('changeDate', ({ detail }) => this.onDateChanged(detail.date))
-	}
+    onDateChanged(date) {
+        // date is a JS Date object from the datepicker; format to DD-MM-YYYY using Luxon
+        this.value = DateTime.fromJSDate(date).toFormat('dd-MM-yyyy')
+    }
 
-	unmounted() {
-		this.datepicker.destroy()
-	}
+    mounted() {
+        const opts = merge(this.options, this.defaults)
+        this.datepicker = new Datepicker(this.view, opts)
+        this.datepicker.setDate(this.formatted_value)
+        // @ts-ignore
+        this.view.addEventListener('changeDate', ({ detail }) => this.onDateChanged(detail.date))
+    }
+
+    updated() {
+        this.datepicker.setDate(this.formatted_value)
+        this.datepicker.setOptions(this.options)
+    }
+
+    unmounted() {
+        this.datepicker.destroy()
+    }
 }
 
 export default toNative(Date)
@@ -84,10 +92,10 @@ export default toNative(Date)
 @import 'vanillajs-datepicker/sass/datepicker-bs5';
 
 input[readonly] {
-	background-color: white !important;
+    background-color: white !important;
 }
 
 .button {
-	@extend .btn;
+    @extend .btn;
 }
 </style>
